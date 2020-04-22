@@ -1,21 +1,28 @@
 import React, { Component } from "react";
 import axios from "axios";
 
-
 class CreateTodo extends Component {
-  state = { title: "", body: ""};
+  constructor(props) {
+    super(props);
+    this.state = { title: "", body: "" };
+  }
 
-  handleFormSubmit = async (event) => {
+  handleFormSubmit = event => {
     event.preventDefault();
-    const {title, body } = this.state;
-    await axios
-      .post(`http://localhost:4000/api/v1/todos`, { title, body})
-      
+    const title = this.state.title;
+    const body = this.state.body;
+    axios
+      .post("http://localhost:4000/api/v1/todos", { title, body })
+      .then(() => {
+        // this.props.getData();
+        this.setState({ title: "", body: "" });
+      })
+      .catch(error => console.log(error));
   };
 
-  handleChange = (event) => {
-    const { title, value } = event.target;
-    this.setState({ [title]: value });
+  handleChange = event => {
+    const { name, value } = event.target;
+    this.setState({ [name]: value });
   };
 
   render() {
@@ -26,18 +33,17 @@ class CreateTodo extends Component {
           <input
             type="text"
             name="title"
-            value={this.title}
-            onChange={(e) => this.handleChange(e)}
+            value={this.state.title}
+            onChange={e => this.handleChange(e)}
           />
           <label>body:</label>
           <input
-            type="text"
             name="body"
-            value={this.body}
-            onChange={(e) => this.handleChange(e)}
+            value={this.state.body}
+            onChange={e => this.handleChange(e)}
           />
-          
-          <button type="submit" value="Submit">Create</button>
+
+          <input type="submit" value="Submit" />
         </form>
       </div>
     );
