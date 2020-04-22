@@ -8,9 +8,8 @@ class CreateTodo extends Component {
   handleFormSubmit = async (event) => {
     event.preventDefault();
     const {title, body } = this.state;
-    console.log (title, body);
     await axios
-      .post(`http://localhost:4000/api/v1/todos`, { title, body}, {withCredentials: true})
+      .post(`http://localhost:4000/api/v1/todos`, { title, body})
       
   };
 
