@@ -1,69 +1,61 @@
-import React, { Component } from "react";
-import axios from "axios";
+import React, { useState, useEffect }from 'react'
+import axios from "axios"
 
-class EditTodo extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      title: this.props.todo.title,
-      body: this.props.todo.body
-    };
+
+
+function EditTodo(props) {
+  const [title, settitle] = useState(props.title);
+  const [body, setbody] = useState(props.body);
+  
+  const gettodoInfo = async () => {
+    const me = await axios.get(`http://localhost:4000/api/v1/todos/${props._id}`);
+    settitle(me.data.title)
+    setbody(me.data.body)
+    
   }
 
-  handleFormSubmit = event => {
-    const title = this.state.title;
-    const body = this.state.body;
+  useEffect( () => {
+    gettodoInfo()
+    }, []);
+  
 
+  
+  async function handleFormSubmit (event){
     event.preventDefault();
-
-    axios.put(`http://localhost:4000/api/v1/todos/${this.props.todo._id}`, 
-    {
-        title,
-        body
-      })
-      .then(() => {
-        this.props.history.push("/ListAll");
-      })
-      .catch(error => console.log(error));
-  };
-
-  handleChangeTitle = event => {
-    this.setState({
-      title: event.target.value
-    });
-  };
-
-  handleChangeBody = event => {
-    this.setState({
-      body: event.target.value
-    });
-  };
-
-  render() {
-    return (
+    try{
+      await axios.put(`http://localhost:4000/api/v1/todos/${props._id}`, { title, body })
+      this.history.push("/ListAll")
+      ;
+    }
+    catch(error){
+      console.log(error)
+    }
+  }
+  
+  return (
+        <div>
       <div>
-        <hr />
-        <h3>Edit form</h3>
-        <form onSubmit={this.handleFormSubmit}>
-          <label>Title:</label>
-          <input
+        <form onSubmit={e => handleFormSubmit(e)}>
+          
+        <label>Title:</label>
+        <input
             type="text"
             name="title"
-            value={this.state.title}
-            onChange={e => this.handleChangeTitle(e)}
+            value={title}
+            onChange={e => settitle(e.target.value)}
           />
-          <label>body:</label>
-          <textarea
+          <br></br>
+          <label>Body:</label>
+          <input
+            type="text"
             name="body"
-            value={this.state.body}
-            onChange={e => this.handleChangeBody(e)}
+            value={body}
+            onChange={e => setbody(e.target.value)}
           />
-
-          <input type="submit" value="Submit" />
+          <button type="submit" value="Submit">Edit</button>
         </form>
       </div>
-    );
-  }
+      </div>
+    )
 }
-
 export default EditTodo;

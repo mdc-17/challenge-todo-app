@@ -21,6 +21,7 @@ class ListAll extends Component {
   handleDelete = (idTodo) => {
     console.log("ID Todo", idTodo);
     axios.delete(`http://localhost:4000/api/v1/todos/${idTodo}`);
+    this.props.history.push("/ListAll")
   };
 
   render() {
