@@ -4,11 +4,11 @@ import axios from "axios"
 
 
 function EditTodo(props) {
-  const [title, settitle] = useState(props.title);
-  const [body, setbody] = useState(props.body);
+  const [title, settitle] = useState(props.theTodo.title);
+  const [body, setbody] = useState(props.theTodo.body);
   
   const gettodoInfo = async () => {
-    const me = await axios.get(`http://localhost:4000/api/v1/todos/${props._id}`);
+    const me = await axios.get(`http://localhost:4000/api/v1/todos/${props.theTodo._id}`);
     settitle(me.data.title)
     setbody(me.data.body)
     
@@ -23,7 +23,7 @@ function EditTodo(props) {
   async function handleFormSubmit (event){
     event.preventDefault();
     try{
-      await axios.put(`http://localhost:4000/api/v1/todos/${props._id}`, { title, body })
+      await axios.put(`http://localhost:4000/api/v1/todos/${props.theTodo._id}`, { title, body })
       this.history.push("/ListAll")
       ;
     }
