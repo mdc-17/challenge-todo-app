@@ -7,7 +7,7 @@ class CreateTodo extends Component {
     this.state = { title: "", body: "" };
   }
 
-  handleFormSubmit = event => {
+  handleFormSubmit = (event) => {
     event.preventDefault();
     const title = this.state.title;
     const body = this.state.body;
@@ -15,17 +15,15 @@ class CreateTodo extends Component {
       .post("http://localhost:4000/api/v1/todos", { title, body })
       .then(() => {
         this.setState({ title: "", body: "" });
-        this.props.history.push("/ListAll")
+        this.props.history.push("/ListAll");
       })
-      .catch(error => console.log(error));
+      .catch((error) => console.log(error));
   };
 
-  handleChange = event => {
+  handleChange = (event) => {
     const { name, value } = event.target;
     this.setState({ [name]: value });
   };
-
-  
 
   render() {
     return (
@@ -36,13 +34,13 @@ class CreateTodo extends Component {
             type="text"
             name="title"
             value={this.state.title}
-            onChange={e => this.handleChange(e)}
+            onChange={(e) => this.handleChange(e)}
           />
           <label>body:</label>
           <input
             name="body"
             value={this.state.body}
-            onChange={e => this.handleChange(e)}
+            onChange={(e) => this.handleChange(e)}
           />
 
           <input type="submit" value="Submit" />
